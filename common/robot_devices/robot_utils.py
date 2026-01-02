@@ -88,3 +88,19 @@ def ctrl_end_pose(piper, end_pose_data, gripper_data):
     piper.MotionCtrl_2(0x01, 0x00, 20, 0x00)
     piper.EndPoseCtrl(*end_pose_data)
     piper.GripperCtrl(abs(gripper_angle), gripper_effort, 0x01, 0)
+
+
+def ctrl_joint(piper, joint_data, gripper_data):
+    """
+    관절 각도로 로봇 제어
+
+    Args:
+        piper: 로봇 인터페이스
+        joint_data: [joint_1, joint_2, joint_3, joint_4, joint_5, joint_6] (0.001도 단위)
+        gripper_data: [gripper_angle, gripper_effort]
+    """
+    gripper_angle, gripper_effort = gripper_data[:]
+
+    piper.MotionCtrl_2(0x01, 0x01, 20, 0x00)  # 0x01 = Joint 제어 모드
+    piper.JointCtrl(*joint_data)
+    piper.GripperCtrl(abs(gripper_angle), gripper_effort, 0x01, 0)
